@@ -1,0 +1,95 @@
+openapi: 3.0.2
+info:
+  title: pyramid-app-with-django-password-hash 
+  version: 0.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /sign_in:
+    post:
+      summary: sign in with email and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignIn'
+        required: true
+      responses:
+        200:
+          description: success signing in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: fail signing in
+          content:
+            application/json:
+              schema:
+                errors:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Error'
+  /sign_up:
+    post:
+      summary: sign up with email and password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUp'
+        required: true
+      responses:
+        201:
+          description: success signing up
+        400:
+          description: fail signing up
+          content:
+            application/json:
+              schema:
+                errors:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+      required:
+        - id
+        - email
+    SignIn:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    SignUp:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    Error:
+      type: object
+      properties:
+        key:
+          type: string
+        message:
+          type: string
+      required:
+        - key
+        - message
